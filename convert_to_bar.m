@@ -1,6 +1,43 @@
-function convert_to_bar(loadfilename,writefilename)
+function convert_to_bar(loadfilename,writefilename,simplex)
+    A = []; b = [];
+    Aeq = []; beq = [];
+    LB = []; UB = [];
     load(loadfilename);
     n = size(H,1);
+
+    if simplex
+        if isempty(Aeq)
+            Aeq = ones(1,n); beq = 1;
+        end
+        if isempty(LB)
+            LB = zeros(n,1);
+        end
+        if isempty(UB)
+            UB = ones(n,1);
+        end
+    else
+        if isempty(LB)
+            LB = -inf*ones(n,1);
+        end
+        if isempty(UB)
+            UB = inf*ones(n,1);
+        end
+    end
+
+    A_zero = find(~any(A,2));
+    b_zero = find(~any(b,2));
+    zero_rows = intersect(A_zero,b_zero);
+    
+    A(zero_rows,:) = [];
+    b(zero_rows,:) = [];
+    
+    Aeq_zero = find(~any(Aeq,2));
+    beq_zero = find(~any(beq,2));
+    zero_rows = intersect(Aeq_zero,beq_zero);
+    
+    Aeq(zero_rows,:) = [];
+    beq(zero_rows,:) = [];
+    
     meq = size(Aeq,1);
     m = size(A,1);
     
@@ -53,6 +90,7 @@ function convert_to_bar(loadfilename,writefilename)
     
     % inequality equations
     for i = 1:m
+        
         fprintf(writefilename,'e%d: ',i);
         first = 0;
         for j = 1:n

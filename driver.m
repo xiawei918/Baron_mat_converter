@@ -1,8 +1,8 @@
-myFolder = '/Users/xiawei918/Documents/Baron_mat_converter/extra_instances/ScozzariTardella';
+myFolder = '/Users/xiawei918/Documents/Baron_mat_converter/extra_instances/random_50';
 filePattern = fullfile(myFolder, '*.mat');
 mpsFiles = dir(filePattern);
 
-writeFolder = '/Users/xiawei918/Documents/Baron_mat_converter/extra_instances/ScozzariTardella_bar';
+writeFolder = '/Users/xiawei918/Documents/Baron_mat_converter/extra_instances/random_50_bar';
 if ~exist(writeFolder,'dir')
     mkdir(writeFolder);
 end
@@ -14,6 +14,6 @@ for k = 1:length(mpsFiles)
   writeFileName = fullfile(writeFolder,barName);
   fprintf(1, 'converting file: %s to %s \n', baseFileName,writeFileName);
   
-  convert_to_bar(fullFileName,writeFileName);
+  convert_to_bar(fullFileName,writeFileName,1);
 end
 
